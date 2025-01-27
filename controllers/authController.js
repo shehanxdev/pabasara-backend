@@ -45,12 +45,29 @@ const auth = asyncHandler(async (req, res) => {
 
 const register = asyncHandler(async (req, res) => {
 
-    //getting body data
-    const { email, password,firstName,lastName,about} = req.body;
+  console.log('==============req======================');
+  console.log(req.body);
+  console.log('====================================');
+
+    const { 
+      fullName,
+      email,
+      age,
+      occupation,
+      gender,
+      height,
+      weight, 
+    } = req.body;
     
   
     //backend validation for body data
-    if (!email || !password || !firstName || !lastName ) {
+    if (!fullName,
+      !email,
+      !age,
+      !occupation,
+      !gender,
+      !height,
+      !weight) {
       res.send(400);
       throw new error("Please enter all the required fields!!!");
     }
@@ -69,14 +86,19 @@ const register = asyncHandler(async (req, res) => {
   
     //create new user in database
     const user = await User.create({
-      email, password,firstName,lastName,about
+      fullName,
+      email,
+      age,
+      occupation,
+      gender,
+      height,
+      weight, 
     });
   
     //send response to frontend
     if (user) {
       res.status(201).json({
         user: user,
-        accessToken: genarateToken(user._id),
       });
     } else {
       //send error message to frontend

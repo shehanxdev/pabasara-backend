@@ -31,7 +31,7 @@ if (server) {
   console.log("Success".green.bold);
 }
 
-app.use(`/api/auth`, authRoutes); 
+app.use(`/api/auth`,authRoutes); 
 
 app.use(errorHandler);
 app.use(notFound);

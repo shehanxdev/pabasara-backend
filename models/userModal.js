@@ -4,15 +4,14 @@ const HOST_API = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_
 //create tour modal
 const userSchema = mongoose.Schema(
   {
-    firstName: { type: "String", required: true },
-    lastName: { type: "String", required: true },
+    fullName: { type: "String", required: true },
     email: { type: "String", required: true },
-    photoURL: { 
-        type: "String", 
-        required: false},
-    about: { type: "String", required: false },
-    role: { type: "String", required: false, default:'user' },
-    password: { type: "String", required: true }
+    age: { type: "String", required: true },
+    occupation: { type: "String", required: false },
+    gender: { type: "String", required: true },
+    height: { type: "String", required: false },
+    weight: { type: "String", required: false }, 
+    password: { type: "String", required: false }, 
    
   },
   {

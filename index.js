@@ -15,7 +15,12 @@ connectDB();
 const PORT = process.env.PORT || 5005;
 
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_API || 'http://192.168.1.82:8081', // Replace with your frontend URL
+  credentials: true,
+}));
+
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -31,7 +36,7 @@ if (server) {
   console.log("Success".green.bold);
 }
 
-app.use(`/api/auth`, authRoutes); 
+app.use(`/api/auth`,authRoutes); 
 
 app.use(errorHandler);
 app.use(notFound);

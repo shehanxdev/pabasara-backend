@@ -4,53 +4,83 @@ const genarateToken = require("../config/generateToken")
 
 //user authenticate
 const auth = asyncHandler(async (req, res) => {
+
+
+  const user={
+            _id: "001",
+            email: "sahan@gmail.com",
+            first_name: "Sahan",
+            last_name: "Randika",
+        }
+
+  res.status(200).json({
+    user: user,
+    success:true
+  });
   
     //getting body data
-    const { email, password } = req.body;
+    // const { email, password } = req.body;
   
-    if(!email){
-        return res.status(400).send({ message: "Email required" });
-    }
-    if(!password){
-        return res.status(400).send({ message: "password required" });
-    }
+    // if(!email){
+    //     return res.status(400).send({ message: "Email required" });
+    // }
+    // if(!password){
+    //     return res.status(400).send({ message: "password required" });
+    // }
 
-    //check if user available in database
-    const user = await User.findOne({ email });
+    // //check if user available in database
+    // const user = await User.findOne({ email });
 
-    if(!user){
-      return res.status(400).send({ message: "Invalid Email or Password" });
-    }
+    // if(!user){
+    //   return res.status(400).send({ message: "Invalid Email or Password" });
+    // }
 
-    if (!(await user.matchPassword(password))){
-      return res.status(400).send({ message: "Invalid Email or Password" });
-    }
+    // if (!(await user.matchPassword(password))){
+    //   return res.status(400).send({ message: "Invalid Email or Password" });
+    // }
   
   
-    //if user available send response with matching password and genarate JWT token using user id
-    if (user && (await user.matchPassword(password))) {
-      res.status(200).json({
-        user: user,
-        accessToken: genarateToken(user._id),
-      });
-    }
-    else {
-      //send error message to frontend
-      res.status(400).json({
-        error: "Invalid Email or Password !!!",
-      });
-      throw new error("Invalid Email or Password !!!");
-    }
+    // //if user available send response with matching password and genarate JWT token using user id
+    // if (user && (await user.matchPassword(password))) {
+    //   res.status(200).json({
+    //     user: user,
+    //     accessToken: genarateToken(user._id),
+    //   });
+    // }
+    // else {
+    //   //send error message to frontend
+    //   res.status(400).json({
+    //     error: "Invalid Email or Password !!!",
+    //   });
+    //   throw new error("Invalid Email or Password !!!");
+    // }
 });
 
 const register = asyncHandler(async (req, res) => {
 
-    //getting body data
-    const { email, password,firstName,lastName,about} = req.body;
+  console.log('==============req======================');
+  console.log(req.body);
+  console.log('====================================');
+
+    const { 
+      fullName,
+      email,
+      age,
+      occupation,
+      gender,
+      height,
+      weight, 
+    } = req.body;
     
   
     //backend validation for body data
-    if (!email || !password || !firstName || !lastName ) {
+    if (!fullName,
+      !email,
+      !age,
+      !occupation,
+      !gender,
+      !height,
+      !weight) {
       res.send(400);
       throw new error("Please enter all the required fields!!!");
     }
@@ -69,14 +99,19 @@ const register = asyncHandler(async (req, res) => {
   
     //create new user in database
     const user = await User.create({
-      email, password,firstName,lastName,about
+      fullName,
+      email,
+      age,
+      occupation,
+      gender,
+      height,
+      weight, 
     });
   
     //send response to frontend
     if (user) {
       res.status(201).json({
         user: user,
-        accessToken: genarateToken(user._id),
       });
     } else {
       //send error message to frontend

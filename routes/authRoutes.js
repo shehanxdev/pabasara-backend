@@ -5,7 +5,7 @@ const { protect } = require("../middleware/authMiddleware");
 
 
 router.route("/me").get(protect,me)
-router.route("/sign_in").post(auth)
+router.route("/sign_in/:email").post(auth)
 router.route("/sign_up").post(register)
 router.route("/register").post(register);
 

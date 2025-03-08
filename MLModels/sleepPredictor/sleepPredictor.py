@@ -6,13 +6,13 @@ import tensorflow as tf
 tf.get_logger().setLevel('ERROR') 
 import joblib  # To load preprocessing models
 
-absolute_path = "D:\Projects\Freelancing\Influence-of-Bedtime-Mobile-App-Backend\MLModels\sleep_model.h5"
+absolute_path = "D:\Projects\Freelancing\Influence-of-Bedtime-Mobile-App-Backend\MLModels\sleepPredictor\sleep_model.h5"
 
 model = tf.keras.models.load_model(absolute_path, custom_objects={"mse": tf.keras.losses.MeanSquaredError()})
 
 # Load preprocessing models
-scaler = joblib.load("D:\Projects\Freelancing\Influence-of-Bedtime-Mobile-App-Backend\MLModels\scaler.pkl")
-encoder = joblib.load("D:\Projects\Freelancing\Influence-of-Bedtime-Mobile-App-Backend\MLModels\encoder.pkl")
+scaler = joblib.load("D:\Projects\Freelancing\Influence-of-Bedtime-Mobile-App-Backend\MLModels\sleepPredictor\scaler.pkl")
+encoder = joblib.load("D:\Projects\Freelancing\Influence-of-Bedtime-Mobile-App-Backend\MLModels\sleepPredictor\encoder.pkl")
 
 # Define categorical column order (Must match training)
 categorical_columns = ["Gender", "BMI Category", "Sleep Disorder"]

@@ -5,6 +5,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config({ path: "./config.env" });
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const connectDB = require("./DB/db");
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 
@@ -37,6 +38,7 @@ if (server) {
 }
 
 app.use(`/api/auth`,authRoutes); 
+app.use(`/api/user`,userRoutes); 
 
 app.use(errorHandler);
 app.use(notFound);

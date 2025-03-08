@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const faceScanRoutes = require("./routes/faceScan.routes");
 const connectDB = require("./DB/db");
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
+const { spawn } = require("child_process");
 
 dotenv.config();
 connectDB();
@@ -27,6 +28,43 @@ app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("Api is running Bedtime Project");
+});
+
+// Step 2: Define API endpoint
+app.post("/predict", (req, res) => {
+  const userData = req.body;
+
+  // Step 3: Spawn Python script
+  const pythonProcess = spawn("python", ["./MLModels/sleepPredictor.py"]);
+
+  // Send data to Python script
+  pythonProcess.stdin.write(JSON.stringify(userData));
+  pythonProcess.stdin.end();
+
+  let result = "";
+
+  // Step 4: Receive output from Python script
+  pythonProcess.stdout.on("data", (data) => {
+    result = data.toString();
+  });
+
+  pythonProcess.stderr.on("data", (data) => {
+    console.error(`${data}`);
+  });
+
+  pythonProcess.on("close", (code) => {
+    if (code !== 0) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    try {
+      console.log(result);
+      const prediction = JSON.parse(result);
+      res.json(prediction);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Invalid response from model" });
+    }
+  });
 });
 
 const server = app.listen(

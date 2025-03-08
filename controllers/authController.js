@@ -4,63 +4,47 @@ const genarateToken = require("../config/generateToken")
 
 //user authenticate
 const auth = asyncHandler(async (req, res) => {
-
-
-  const user={
-            _id: "001",
-            email: "sahan@gmail.com",
-            first_name: "Sahan",
-            last_name: "Randika",
-        }
-
-  res.status(200).json({
-    user: user,
-    success:true
-  });
   
-    //getting body data
-    // const { email, password } = req.body;
+    const { email, password } = req.body;
   
-    // if(!email){
-    //     return res.status(400).send({ message: "Email required" });
-    // }
-    // if(!password){
-    //     return res.status(400).send({ message: "password required" });
-    // }
+    if(!email){
+        return res.status(400).send({ message: "Email required" });
+    }
+    if(!password){
+        return res.status(400).send({ message: "password required" });
+    }
 
-    // //check if user available in database
-    // const user = await User.findOne({ email });
+    //check if user available in database
+    const user = await User.findOne({ email });
 
-    // if(!user){
-    //   return res.status(400).send({ message: "Invalid Email or Password" });
-    // }
+    if(!user){
+      return res.status(400).send({ message: "Invalid Email or Password" });
+    }
 
-    // if (!(await user.matchPassword(password))){
-    //   return res.status(400).send({ message: "Invalid Email or Password" });
-    // }
+    if (!(await user.matchPassword(password))){
+      return res.status(400).send({ message: "Invalid Email or Password" });
+    }
   
   
-    // //if user available send response with matching password and genarate JWT token using user id
-    // if (user && (await user.matchPassword(password))) {
-    //   res.status(200).json({
-    //     user: user,
-    //     accessToken: genarateToken(user._id),
-    //   });
-    // }
-    // else {
-    //   //send error message to frontend
-    //   res.status(400).json({
-    //     error: "Invalid Email or Password !!!",
-    //   });
-    //   throw new error("Invalid Email or Password !!!");
-    // }
+    //if user available send response with matching password and genarate JWT token using user id
+    if (user && (await user.matchPassword(password))) {
+      res.status(200).json({
+        user: user,
+        accessToken: genarateToken(user._id),
+        success:true,
+        message:"Logged in successfully"
+      });
+    }
+    else {
+      //send error message to frontend
+      res.status(400).json({
+        error: "Invalid Email or Password !!!",
+      });
+      throw new error("Invalid Email or Password !!!");
+    }
 });
 
 const register = asyncHandler(async (req, res) => {
-
-  console.log('==============req======================');
-  console.log(req.body);
-  console.log('====================================');
 
     const { 
       fullName,
@@ -70,6 +54,7 @@ const register = asyncHandler(async (req, res) => {
       gender,
       height,
       weight, 
+      password
     } = req.body;
     
   
@@ -80,15 +65,16 @@ const register = asyncHandler(async (req, res) => {
       !occupation,
       !gender,
       !height,
-      !weight) {
+      !weight,
+      !password) {
       res.send(400);
       throw new error("Please enter all the required fields!!!");
     }
   
-    //find if user exist with email and user name
+    
     const userExist = await User.findOne({ email });
   
-    //sending error message if user exist
+   
     if (userExist) {
       console.log("User already exist!!!".red.bold);
       res.status(400).json({
@@ -106,17 +92,22 @@ const register = asyncHandler(async (req, res) => {
       gender,
       height,
       weight, 
+      password
     });
   
     //send response to frontend
     if (user) {
       res.status(201).json({
         user: user,
+        success:true,
+        message:'User Registered'
       });
     } else {
       //send error message to frontend
       res.status(400).json({
-        error: "Failed to Register User !!!",
+        user:null,
+        success:false,
+        message: "Failed to Register User !!!",
       });
       throw new error("Failed to Register User !!!");
     }

@@ -12,6 +12,12 @@ const userSchema = mongoose.Schema(
     height: { type: "String", required: false },
     weight: { type: "String", required: false }, 
     password: { type: "String", required: false }, 
+    survay_completed:{ type: Boolean, required: false, default:false }, 
+    sleepingDisorder: { type: Boolean, required: false, default: false},
+    sleepingDisorderNote: { type: "String", required: false, default:'' },
+    physicalDisability: { type: Boolean, required: false, default:false },
+    physicalDisabilityNote: { type: "String", required: false, default:'' },
+    workEnvironmentImpact: { type: "String", required: false, default:'' },
    
   },
   {

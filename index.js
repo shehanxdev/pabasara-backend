@@ -6,6 +6,7 @@ const app = express();
 require("dotenv").config({ path: "./config.env" });
 const authRoutes = require("./routes/authRoutes");
 const faceScanRoutes = require("./routes/faceScan.routes");
+const userRoutes = require("./routes/userRoutes");
 const connectDB = require("./DB/db");
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 const { spawn } = require("child_process");
@@ -77,6 +78,7 @@ if (server) {
 
 app.use(`/api/auth`, authRoutes);
 app.use(`/api/face`, faceScanRoutes);
+app.use(`/api/user`, userRoutes);
 
 app.use(errorHandler);
 app.use(notFound);

@@ -3,10 +3,12 @@ const router = express.Router();
 const {
   submitSurvay
 } = require("../controllers/userController");
+const { predictBedtime } = require("../controllers/BedtimePredictController");
 
 
 
 router.route("/submit_survay/:_id").post(submitSurvay);
+router.route("/predict_bedtime/:_id").post(predictBedtime);
 
 
 

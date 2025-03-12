@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const { spawn } = require("child_process");
+const SleepTimeRecord = require("../models/sleepTimeRecordModal");
 
 const sleepPredictor = asyncHandler(async (req, res) => {
   const userData = req.body;
@@ -39,6 +40,36 @@ const sleepPredictor = asyncHandler(async (req, res) => {
   });
 });
 
+const addSleepRecord = asyncHandler(async (req, res) => {
+  const { date, sleepDuration, dailyStepCount } = req.body;
+
+  try {
+    const newRecord = new SleepTimeRecord({
+      date,
+      sleepDuration,
+      dailyStepCount,
+    });
+
+    await newRecord.save();
+    res.status(201).json({ message: "Sleep record added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to add sleep record" });
+  }
+});
+
+const getAllSleepRecords = asyncHandler(async (req, res) => {
+  try {
+    const records = await SleepTimeRecord.find({});
+    res.status(200).json(records);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to retrieve sleep records" });
+  }
+});
+
 module.exports = {
   sleepPredictor,
+  addSleepRecord,
+  getAllSleepRecords,
 };

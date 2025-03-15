@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const faceScanRoutes = require("./routes/faceScan.routes");
 const userRoutes = require("./routes/userRoutes");
 const sleepPredictorRoutes = require("./routes/sleepPredictor.routes");
+const sleepInterventionRoutes = require("./routes/sleepIntervention.routes");
 const connectDB = require("./DB/db");
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 
@@ -42,6 +43,7 @@ app.use(`/api/auth`, authRoutes);
 app.use(`/api/face`, faceScanRoutes);
 app.use(`/api/user`, userRoutes);
 app.use(`/api/sleep`, sleepPredictorRoutes);
+app.use(`/api/intervention`, sleepInterventionRoutes);
 
 app.use(errorHandler);
 app.use(notFound);

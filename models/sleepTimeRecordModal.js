@@ -11,7 +11,7 @@ const sleepTimeRecordSchema = new mongoose.Schema({
   },
   dailyStepCount: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 

@@ -41,22 +41,49 @@ const sleepPredictor = asyncHandler(async (req, res) => {
 });
 
 const addSleepRecord = asyncHandler(async (req, res) => {
-  const { date, sleepDuration, dailyStepCount } = req.body;
+  let { date, sleepDuration, dailyStepCount } = req.body;
 
   try {
-    const newRecord = new SleepTimeRecord({
-      date,
-      sleepDuration,
-      dailyStepCount,
-    });
+    // Check if a record with the given date exists
+    // date = date.split("T")[0];
+    // const [year, month, day] = date.split("-");
+    const formatteDate = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Colombo",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date(date));
+    console.log(formatteDate);
+    let record = await SleepTimeRecord.findOne({ date: formatteDate });
 
-    await newRecord.save();
-    res
-      .status(201)
-      .json({ message: "Sleep record added successfully", record: newRecord });
+    if (record) {
+      // Update the existing record
+      record.sleepDuration = sleepDuration;
+      record.dailyStepCount = dailyStepCount;
+      await record.save();
+
+      res
+        .status(200)
+        .json({ message: "Sleep record updated successfully", record });
+    } else {
+      // Create a new record
+      record = new SleepTimeRecord({
+        date: formatteDate,
+        sleepDuration,
+        dailyStepCount,
+      });
+      await record.save();
+
+      res
+        .status(201)
+        .json({ message: "Sleep record added successfully", record });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to add sleep record" });
+    res.status(500).json({
+      error: "Failed to add or update sleep record",
+      message: error.message,
+    });
   }
 });
 
@@ -74,7 +101,8 @@ const getAllSleepRecords = asyncHandler(async (req, res) => {
 const updateRecord = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { date, sleepDuration, dailyStepCount } = req.body;
-
+  console.log("Updating record...");
+  console.log(date);
   try {
     const updatedRecord = await SleepTimeRecord.findByIdAndUpdate(
       id,

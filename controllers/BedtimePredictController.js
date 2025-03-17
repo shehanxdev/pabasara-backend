@@ -4,9 +4,28 @@ const {spawn} = require("child_process");
 const path = require("path");
 
 
+const addToken = asyncHandler( async(req, res) => {
+
+  const { token } = req.body;
+  const { _id } = req.params;
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: _id }, // Assuming user is authenticated
+      { expoPushToken: token },
+      { new: true }
+    );
+
+    res.json({ success: true, message: "Push token saved successfully", user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Error saving push token" });
+  }
+
+})
+
 const predictBedtime = asyncHandler(async (req, res) => {
   
-    const {_id} = req.params
+    const {_id,stepCount} = req.params
   
     if (!_id) {
       res.send(400).json({
@@ -34,15 +53,21 @@ const predictBedtime = asyncHandler(async (req, res) => {
       } = derivedFields;
 
       const {
-        Technology_Usage_Hours,
-        Social_Media_Usage_Hours,
-        Gaming_Hours,
-        Screen_Time_Hours,
-        Sleep_Hours,
-        Physical_Activity_Hours,
+        Technology_Usage_Hours, //
+        Social_Media_Usage_Hours, //
+        Gaming_Hours, //
+        Screen_Time_Hours, //
+        Sleep_Hours, //
+        Physical_Activity_Hours, //
       } = usageFields;
 
       const Age = parseInt(user.age);
+
+      let physicalActivityHours = Physical_Activity_Hours;
+      if (stepCount !== null) {
+        // Assuming 1000 steps = 1 hour, adjust this conversion factor as needed
+        physicalActivityHours = stepCount / 1000; // Convert steps to hours
+      }
 
       const pythonScriptPath = path.join(
         __dirname, 
@@ -60,7 +85,7 @@ const predictBedtime = asyncHandler(async (req, res) => {
           Gender_Female,
           Work_Environment_Impact_Neutral,
           Work_Environment_Impact_Positive,
-          Physical_Activity_Hours,
+          physicalActivityHours,
           Stress_Level,
           BMI_Category_Overweight,
           BMI_Category_Underweight,
@@ -108,6 +133,10 @@ const predictBedtime = asyncHandler(async (req, res) => {
           if (data) {
     
             const output = data.toString();
+
+            console.log('=============output=======================');
+            console.log(output);
+            console.log('====================================');
             
             res.status(200).json({
               data: output,
@@ -127,9 +156,9 @@ const predictBedtime = asyncHandler(async (req, res) => {
         error: "User not found",
       });
     }
-  });
+});
   
   module.exports = {
     predictBedtime,
-    
+    addToken
   };

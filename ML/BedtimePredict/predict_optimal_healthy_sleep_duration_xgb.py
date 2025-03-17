@@ -33,39 +33,39 @@ def main():
     model = load_model(model_path)
 
     # Parse command-line arguments
-    user_input = {
-        'Age': int(sys.argv[1]),
-        'Gender_Male': int(sys.argv[2]),
-        'Gender_Female': int(sys.argv[3]),
-        'Work_Environment_Impact_Neutral': int(sys.argv[4]),
-        'Work_Environment_Impact_Positive': int(sys.argv[5]),
-        'Physical_Activity_Hours': float(sys.argv[6]),
-        'Stress_Level': int(sys.argv[7]),
-        'BMI_Category_Overweight': int(sys.argv[8]),
-        'BMI_Category_Underweight': int(sys.argv[9]),
-        'Technology_Usage_Hours': int(sys.argv[10]),
-        'Social_Media_Usage_Hours': float(sys.argv[11]),
-        'Gaming_Hours': int(sys.argv[12]),
-        'Screen_Time_Hours': int(sys.argv[13]),
-        'Sleep_Hours': int(sys.argv[14])
-    }
-
     # user_input = {
-    #     'Age': 17,
-    #     'Gender_Male': 1,
-    #     'Gender_Female': 0, 
-    #     'Work_Environment_Impact_Neutral': 1,
-    #     'Work_Environment_Impact_Positive': 0,
-    #     'Physical_Activity_Hours': 6.35, # need
-    #     'Stress_Level': 6, 
-    #     'BMI_Category_Overweight': 1, 
-    #     'BMI_Category_Underweight': 0,
-    #     'Technology_Usage_Hours': 2,
-    #     'Social_Media_Usage_Hours': 1.5,
-    #     'Gaming_Hours': 0,
-    #     'Screen_Time_Hours': 0,
-    #     'Sleep_Hours': 0
+    #     'Age': int(sys.argv[1]),
+    #     'Gender_Male': int(sys.argv[2]),
+    #     'Gender_Female': int(sys.argv[3]),
+    #     'Work_Environment_Impact_Neutral': int(sys.argv[4]),
+    #     'Work_Environment_Impact_Positive': int(sys.argv[5]),
+    #     'Physical_Activity_Hours': float(sys.argv[6]),
+    #     'Stress_Level': int(sys.argv[7]),
+    #     'BMI_Category_Overweight': int(sys.argv[8]),
+    #     'BMI_Category_Underweight': int(sys.argv[9]),
+    #     'Technology_Usage_Hours': int(sys.argv[10]),
+    #     'Social_Media_Usage_Hours': float(sys.argv[11]),
+    #     'Gaming_Hours': int(sys.argv[12]),
+    #     'Screen_Time_Hours': int(sys.argv[13]),
+    #     'Sleep_Hours': int(sys.argv[14])
     # }
+
+    user_input = {
+        'Age': 17,
+        'Gender_Male': 1,
+        'Gender_Female': 0, 
+        'Work_Environment_Impact_Neutral': 1,
+        'Work_Environment_Impact_Positive': 0,
+        'Physical_Activity_Hours': 6.35, # need
+        'Stress_Level': 6, 
+        'BMI_Category_Overweight': 1, 
+        'BMI_Category_Underweight': 0,
+        'Technology_Usage_Hours': 2,
+        'Social_Media_Usage_Hours': 1.5,
+        'Gaming_Hours': 0,
+        'Screen_Time_Hours': 0,
+        'Sleep_Hours': 0
+    }
 
     user_input_df = preprocess_input_data(model,user_input)
 

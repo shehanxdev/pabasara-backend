@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const HOST_API = process.env.NODE_ENV === 'production' ? process.env.PRODUCTION_API : process.env.DEV_API;
+
 //create tour modal
 const userSchema = mongoose.Schema(
   {
@@ -19,6 +19,13 @@ const userSchema = mongoose.Schema(
     physicalDisabilityNote: { type: "String", required: false, default:'' },
     workEnvironmentImpact: { type: "String", required: false, default:'' },
     stressLevel: { type: "String", required: false, default:'Avarage' },
+    wakeup_time: [
+      {
+        day: { type: String, required: true, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] },
+        time: { type: String, required: true },
+      },
+    ],
+    expoPushToken: { type: "String", required: false, default:'Avarage' },
    
   },
   {

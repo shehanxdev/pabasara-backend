@@ -11,6 +11,7 @@ const sleepPredictorRoutes = require("./routes/sleepPredictor.routes");
 const sleepInterventionRoutes = require("./routes/sleepIntervention.routes");
 const connectDB = require("./DB/db");
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
+const corn = require('./service/BedtimeScheduler')
 
 dotenv.config();
 connectDB();

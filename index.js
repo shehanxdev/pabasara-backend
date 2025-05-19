@@ -3,15 +3,15 @@ const colors = require("colors");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const app = express();
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: "./.env" });
 const authRoutes = require("./routes/authRoutes");
 const faceScanRoutes = require("./routes/faceScan.routes");
 const userRoutes = require("./routes/userRoutes");
 const sleepPredictorRoutes = require("./routes/sleepPredictor.routes");
 const sleepInterventionRoutes = require("./routes/sleepIntervention.routes");
-const connectDB = require("./DB/db");
+const connectDB = require("./db/db");
 const { errorHandler, notFound } = require("./middleware/errorMiddleware");
-const corn = require('./service/BedtimeScheduler')
+const corn = require("./service/BedtimeScheduler");
 
 dotenv.config();
 connectDB();
